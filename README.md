@@ -6,4 +6,4 @@ Welcome to my portfolio! This website showcases my skills, projects, and experie
 
 Check out the deployed portfolio site: [My Portfolio](https://muhammedrisin.netlify.app/)
 
-![Portfolio Preview](https://via.placeholder.com/1200x600.png?text=Portfolio+Preview)
+![Portfolio Preview](assets/img/preview.png)
