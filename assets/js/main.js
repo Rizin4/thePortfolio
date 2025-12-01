@@ -2,14 +2,26 @@
 const contactForm = document.getElementById('contact-form')
 const contactMessage = document.getElementById('contact-message')
 
+/* Initialize EmailJS with your public key (recommended) so errors are clearer.
+    If you prefer not to init globally you can still pass the publicKey in sendForm. */
+try { emailjs.init('FOx0bVaYdGlBpuRi2'); } catch (err) { /* safe-fail if emailjs not loaded */ }
+
 const sendEmail = (e) =>{
     e.preventDefault()
 
-    // serviceID - templateID - #form - publicKey
+    // Basic client-side validation so we don't send empty submissions
+    const name = contactForm.user_name?.value?.trim()
+    const email = contactForm.user_email?.value?.trim()
+    const message = contactForm.user_message?.value?.trim()
 
-    emailjs.sendForm('service_i7zmnu8','template_b2jvkhl','#contact-form','FOx0bVaYdGlBpuRi2')
+    if (!name || !email || !message){
+        contactMessage.textContent = 'Please fill all fields before sending.'
+        return
+    }
 
-    .then(() =>{
+    // serviceID - templateID - formElement
+    emailjs.sendForm('service_i7zmnu8','template_b2jvkhl', contactForm)
+    .then((response) =>{
         // Show sent message
         contactMessage.textContent = 'Message sent successfully ✅'
 
@@ -20,9 +32,23 @@ const sendEmail = (e) =>{
 
         // Clear input fields
         contactForm.reset()
-    }, () => {
-        // Show error message
-        contactMessage.textContent = 'Message not sent (service error) ❌'
+    }).catch((err) => {
+        // Show error message and log details for debugging (412 often means a template precondition failed)
+        console.error('EmailJS send error', err)
+
+        // Attach HTTP status (if available) so it's visible in the UI while debugging
+        const status = err?.status || err?.statusCode
+        contactMessage.textContent = `Message not sent (service error) ❌${status ? ' — ' + status : ''}`
+
+        /* Common causes for 412 (Precondition Failed):
+           - template expects variables that weren't provided
+           - service/template IDs don't match your EmailJS account
+           - public key or account config is invalid
+
+           Next steps: check the template variables in your EmailJS dashboard and ensure
+           the form field names match required variable names (or use emailjs.send and
+           pass an object with the correct variable names for your template).
+        */
     })
 }
 
