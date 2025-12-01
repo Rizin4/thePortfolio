@@ -192,10 +192,18 @@ img {
 }
 
 .perfil__img{
-  width: 250px;
   position: absolute;
-  justify-self: center;
-  align-self: flex-end;
+  /* center horizontally and sit at the bottom of the .perfil box */
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+
+  /* keep the image fully inside the card and scale responsively */
+  width: auto;
+  height: auto;
+  max-width: calc(100% - 2rem); /* respect container padding */
+  max-height: calc(100% - 2rem);
+  object-fit: contain;
 }
 
 .perfil__data{
@@ -731,7 +739,7 @@ img {
     padding-top: 2px;
   }
   .perfil__img{
-    width: 170px;
+    /* no fixed width here; constrained by max-width/max-height above */
   }
   .perfil__name{
     font-size: 37px;
@@ -795,7 +803,7 @@ img {
     padding: 2rem;
   }
   .perfil__img{
-    width: 450px;
+    /* allow the image to scale to the container without overflowing */
   }
   .perfil__data{
     width: 100%;
