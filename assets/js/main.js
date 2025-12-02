@@ -20,7 +20,7 @@ const sendEmail = (e) =>{
     }
 
     // serviceID - templateID - formElement
-    emailjs.sendForm('service_i7zmnu8','template_b2jvkhl', contactForm)
+    emailjs.sendForm('service_0ole9sp','template_b2jvkhl', contactForm)
     .then((response) =>{
         // Show sent message
         contactMessage.textContent = 'Message sent successfully ✅'
